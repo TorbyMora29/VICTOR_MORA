@@ -1,0 +1,2 @@
+dotnet ef migrations add InitialCreate -s ..\ProyectoJwt.Api -p ..\ProyectoJwt.Persistencia
+dotnet ef database update InitialCreate -s ..\ProyectoJwt.Api -p ..\ProyectoJwt.Persistencia
