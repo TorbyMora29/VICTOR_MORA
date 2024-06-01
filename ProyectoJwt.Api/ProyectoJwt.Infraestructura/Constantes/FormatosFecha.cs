@@ -2,6 +2,6 @@
 {
     public static class FormatosFecha
     {
-        public const string m_FormatoFechaComun = "dd/mm/yyyy";
+        public const string m_FormatoFechaComun = "dd/MM/yyyy";
     }
 }

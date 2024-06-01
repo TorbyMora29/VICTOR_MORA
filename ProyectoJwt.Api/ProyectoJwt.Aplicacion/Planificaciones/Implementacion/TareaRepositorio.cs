@@ -95,6 +95,28 @@ namespace ProyectoJwt.Aplicacion.Planificaciones.Implementacion
             }
         }
 
+        public Result<TareaDto[]> ConsultarTodos(ConsultarTodos completarTarea)
+        {
+            try
+            {
+                var tareas = _context.Tareas
+                    .Where(e => e.Activo)
+                    .ToArray();
+
+                if (!string.IsNullOrEmpty(completarTarea.TituloContiene))
+                {
+                    tareas = tareas.Where(e => e.Titulo.Contains(completarTarea.TituloContiene)).ToArray();
+                }
+
+                return Result.Ok(tareas.Mapear<TareaDto[]>());
+
+            }
+            catch (Exception)
+            {
+                return Result.Fail("Error al consultar la tarea");
+            }
+        }
+
         public Result CrearTarea(Crear creacion)
         {
             try

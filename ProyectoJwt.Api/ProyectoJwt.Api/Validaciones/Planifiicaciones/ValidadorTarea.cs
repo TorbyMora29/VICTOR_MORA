@@ -70,5 +70,18 @@ namespace ProyectoJwt.Api.Validaciones.Planifiicaciones
 
             return Result.Ok();
         }
+
+        public static Result ValidarEntrada(TareaDto.ConsultarTodos request)
+        {
+            var resultado = new ValidacionTarea.ConsultarTodos()
+                .Validate(request);
+
+            if (!resultado.IsValid)
+            {
+                return Result.Fail(resultado.Errors.Select(x => x.ErrorMessage));
+            }
+
+            return Result.Ok();
+        }
     }
 }

@@ -1,0 +1,73 @@
+﻿@model TareaVm
+@{
+    string tipo = (string)this.ViewBag.Tipo;
+}
+
+<div class="table">
+    <div class="row mt-3">
+        @if(tipo == ModoVista.m_tipoEdicion)
+        {
+            <div class="col-6">
+                <div style="width:100%">
+                    <label class="form-label" style="width:100%" for="identificador">Tarea N°:</label>
+                    <input class="form-control" asp-for="Identificador" id="identificador" style="width:100%" disabled />
+                </div>
+            </div>
+        }
+        <div class="col-6">
+            <div style="width:100%">
+                <label class="form-label" style="width:100%" for="titulo">Título:</label>
+                <input class="form-control" asp-for="Titulo" id="titulo" style="width:100%" disabled="@Model.EsCompletada" />
+            </div>
+        </div>
+    </div>
+    <div class="row mt-3">
+        <div class="col-6">
+            <div style="width:100%">
+                <label class="form-label" style="width:100%" for="descripcion">Descripción:</label>
+                <input class="form-control" asp-for="Descripcion" id="descripcion" style="width:100%" disabled="@Model.EsCompletada" />
+            </div>
+        </div>
+        <div class="col-6">
+            <div style="width:100%">
+                <label class="form-label" style="width:100%" for="fechaVencimiento">Fecha Vencimiento:</label>
+                <input class="form-control" asp-for="FechaVencimiento" id="fechaVencimiento" style="width:100%" disabled="@Model.EsCompletada"
+                    min="@DateTime.Today.ToDateIsoFormat()"/>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-3">
+        @if(tipo == ModoVista.m_tipoCreacion)
+        {
+            <div class="col-1">
+                <button class="btn btn-sm btn-primary" onclick="Crear()">
+                    Crear
+                </button>
+            </div>
+        }
+
+        @if(tipo == ModoVista.m_tipoEdicion)
+        {
+            <div class="col-1">
+                <button class="btn btn-sm btn-primary" onclick="Actualizar()">
+                    Guardar
+                </button>
+            </div>
+            @if (!Model.EsCompletada)
+            {
+                <div class="col-1">
+                    <button class="btn btn-sm btn-outline-primary" onclick="Completar()">
+                        Finalizar
+                    </button>
+                </div>
+            }
+        }        
+        <div class="col-1">
+            <button class="btn btn-sm btn-secondary" onclick="FiltarDocumentos()">
+                Regresar
+            </button>
+        </div>
+    </div>
+</div>
+
+<script src="~/js/Tarea/edit.js"></script>

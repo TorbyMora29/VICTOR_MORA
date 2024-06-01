@@ -1,4 +1,7 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using FluentResults;
+using Microsoft.Extensions.Configuration;
+using System.Net;
+using System.Net.Http.Headers;
 using System.Net.Http.Json;
 
 namespace ProyectoJwt.Servicios.Servicios
@@ -19,18 +22,29 @@ namespace ProyectoJwt.Servicios.Servicios
             return await _httpClient.GetFromJsonAsync<T>(ProcesarUri(uri));
         }
 
-        public async Task<TResponse> PostAsync<TRequest, TResponse>(string uri, TRequest data)
+        public async Task<Result<TResponse?>> PostAsync<TRequest, TResponse>(string uri, TRequest data, string? bearerToken = null)
         {
             try
             {
+                // Agregar Bearer Token
+                if (!String.IsNullOrEmpty(bearerToken))
+                {
+                    _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", bearerToken);
+                }
+                
                 var response = await _httpClient.PostAsJsonAsync(ProcesarUri(uri), data);
                 response.EnsureSuccessStatusCode();
-                return await response.Content.ReadFromJsonAsync<TResponse>();
-            }
-            catch (Exception ex)
-            {
 
-                throw;
+                if(response.StatusCode == HttpStatusCode.OK)
+                {
+                    return Result.Ok(await response.Content.ReadFromJsonAsync<TResponse>());
+                }
+
+                return Result.Fail($"La solicitud devolvió un código: {response.StatusCode}");
+            }
+            catch
+            {
+                return Result.Fail("Error al procesar la solicitud");
             }
         }
 

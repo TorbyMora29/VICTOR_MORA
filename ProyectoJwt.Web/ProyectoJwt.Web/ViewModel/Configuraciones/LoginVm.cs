@@ -8,6 +8,7 @@ namespace ProyectoJwt.Web.ViewModel.Configuraciones
         public string Usuario { get; set; } = null!;
 
         [Required]
+        [DataType(DataType.Password)]
         public string Contraseña { get; set; } = null!;
     }
 }

@@ -1,2 +1,9 @@
+// Comando para agregar nueva migración
 dotnet ef migrations add InitialCreate -s ..\ProyectoJwt.Api -p ..\ProyectoJwt.Persistencia
+
+// Comando para ejecutar migración especifica
 dotnet ef database update InitialCreate -s ..\ProyectoJwt.Api -p ..\ProyectoJwt.Persistencia
+
+
+// Ejecutar toda la creación de la base de datos, solo implementar cuando es nuevo
+dotnet ef database update -s ..\ProyectoJwt.Api -p ..\ProyectoJwt.Persistencia

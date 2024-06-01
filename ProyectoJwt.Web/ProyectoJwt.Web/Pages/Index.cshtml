@@ -2,6 +2,10 @@
 @model IndexModel
 @{
     ViewData["Title"] = "Bienvendido";
+
+    var error = TempData["Error"] != null
+        ? TempData["Error"] as string
+        : string.Empty;
 }
 
 <!DOCTYPE html>
@@ -18,10 +22,10 @@
             <div class="col-md-6">
                 <div class="card mt-5">
                     <div class="card-header">
-                        <h3 class="text-center">Login</h3>
+                        <h3 id="titulo" class="text-center">Login</h3>
                     </div>
                     <div class="card-body">
-                        <form method="post" asp-action="IniciarSesion" asp-controller="Login">
+                        <form id="formulario-login" method="post" asp-action="IniciarSesion" asp-controller="Login">
                             <div class="form-group">
                                 <label for="Usuario">Usuario</label>
                                 <input type="text" class="form-control" id="Usuario" name="Usuario" required>
@@ -32,10 +36,29 @@
                             </div>
                             <div class="form-group mt-3 text-center">
                                 <button type="submit" class="btn btn-primary">Ingresar</button>
+                                <a class="btn btn-outline-primary" onclick="MostrarFormularioCreacion()">Registrarse</a>
+                            </div>
+                        </form>
+                        <form id="formulario-crear" class="d-none" method="post" asp-action="CrearUsuario" asp-controller="Login">
+                            <div class="form-group">
+                                <label for="DescripcionUsuario">Nombre Usuario</label>
+                                <input type="text" class="form-control" id="DescripcionUsuario" name="DescripcionUsuario" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="CodigoUsuario">Login Usuario</label>
+                                <input type="text" class="form-control" id="CodigoUsuario" name="CodigoUsuario" required>
+                            </div>
+                            <div class="form-group mt-3">
+                                <label for="ContraseñaUsuario">Nueva Contraseña</label>
+                                <input type="password" class="form-control" id="ContraseñaUsuario" name="ContraseñaUsuario" required>
+                            </div>
+                            <div class="form-group mt-3 text-center">
+                                <button type="submit" class="btn btn-primary">Crear</button>
+                                <a class="btn btn-outline-secondary" onclick="MostrarFormularioLogin()">Cancelar</a>
                             </div>
                         </form>
                         <div class="form-group mt-3 text-danger text-center">
-                            @(TempData["Error"] as string)
+                            @error
                         </div>
                     </div>                    
                     <div class="card-footer text-center">
@@ -49,3 +72,15 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
+<script>
+    function MostrarFormularioCreacion() {
+        document.getElementById("titulo").textContent = "Registrarse";
+        document.getElementById("formulario-login").classList.add("d-none");
+        document.getElementById("formulario-crear").classList.remove("d-none");
+    }
+    function MostrarFormularioLogin() {
+        document.getElementById("titulo").textContent = "Login";
+        document.getElementById("formulario-login").classList.remove("d-none");
+        document.getElementById("formulario-crear").classList.add("d-none");
+    }
+</script>

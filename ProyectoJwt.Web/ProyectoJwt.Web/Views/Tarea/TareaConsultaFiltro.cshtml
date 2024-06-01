@@ -1,0 +1,26 @@
+﻿<div class="table">
+    <div class="row">
+        <div class="col-1">
+            <label>Titulo Contiene:</label>
+        </div>
+        <div class="col-9">
+            <input id="TituloContieneFiltro" placeholder="ingrese un texto..." style="width:100%" />
+        </div>
+        <div class="col-1">
+            <button class="btn btn-secondary" onclick="ConsultarTodos()">
+                Consultar
+            </button>
+        </div>
+        <div class="col-1">
+            <button class="btn btn-primary" onclick="GenerarNuevo()">
+                Nuevo
+            </button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12" id="tabla-resultado">
+        </div>
+    </div>
+</div>
+
+<script src="~/js/Tarea/edit.js"></script>

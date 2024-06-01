@@ -11,7 +11,7 @@ namespace ProyectoJwt.Web.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class LoginController : Controller
+    public class LoginController : BaseController
     {
         private readonly ILoginRepositorio _login;
 
@@ -20,6 +20,7 @@ namespace ProyectoJwt.Web.Controllers
             _login = login;
         }
 
+        [HttpGet("Index")]
         public ActionResult Index()
         {
             return View();
@@ -30,19 +31,20 @@ namespace ProyectoJwt.Web.Controllers
         {
             try
             {
-                var solicitud = login.Mapear<LoginSolicitud>();
+                var solicitud = login.Mapear<LoginSolicitudDto>();
                 var respuestaToken = await _login.GenerarToken(solicitud);
 
-                if (respuestaToken is null)
+                if (respuestaToken.IsFailed)
                 {
                     TempData["Error"] = "Usuario y/o Credenciales incorrectas";
-                    Redirect("Index");
-                };
+                    return RedirectToPage("/Index");
+                }
 
+                var tokenGenerado = respuestaToken.Value!;
                 var claims = new List<Claim>
                 {
-                    new Claim(ClaimTypes.Name, respuestaToken.Usuario),
-                    new Claim(ClaimTypes.NameIdentifier, Guid.NewGuid().ToString())
+                    new(ClaimTypes.Name, tokenGenerado.Usuario),
+                    new(ClaimTypes.NameIdentifier, Guid.NewGuid().ToString())
                 };
                 var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                 var principal = new ClaimsPrincipal(identity);
@@ -50,18 +52,46 @@ namespace ProyectoJwt.Web.Controllers
 
                 await HttpContext.SignInAsync(principal);
 
-                HttpContext.Session.SetString("Token", respuestaToken.Token);
+                HttpContext.Session.SetString("Token", tokenGenerado.Token);
             }
             catch (Exception)
             {
-                return View("");
+                RedirectToAction("Error", "Home");
             }
 
-            return RedirectToAction("Prueba", "Tarea");
+            return RedirectToAction("Index", "Home");
         }
-        public IActionResult CerrarSesion()
+
+
+        [HttpGet("CerrarSesion")]
+        public async Task<IActionResult> CerrarSesion()
         {
-            return View();
+            HttpContext.Session.Clear();
+            await HttpContext.SignOutAsync();
+            return RedirectToPage("/Index");
+        }
+
+
+        [HttpPost("CrearUsuario")]
+        public async Task<IActionResult> CrearUsuario([FromForm] CrearUsuarioVm crearUsuario)
+        {
+            try
+            {
+                var solicitud = crearUsuario.Mapear<CrearUsuarioSolicitudDto>();
+                var respuestaToken = await _login.CrearUsuario(solicitud);
+
+                if (respuestaToken.IsFailed)
+                {
+                    TempData["Error"] = "Error al crear usuario: " + string.Join("\n", respuestaToken.Errors);
+                    return RedirectToPage("/Index");
+                }
+            }
+            catch (Exception)
+            {
+                RedirectToAction("Error", "Home");
+            }
+
+            return RedirectToPage("/Index");
         }
     }
 }

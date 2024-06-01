@@ -1,0 +1,124 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>ProyectoJwt</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" crossorigin="anonymous">
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/ProyectoJwt.Web.styles.css" asp-append-version="true" />
+
+    <style>
+        body {
+            display: flex;
+            min-height: 100vh;
+            flex-direction: column;
+            margin: 0; /* Asegúrate de que no haya márgenes en el cuerpo */
+        }
+
+        .container-fluid {
+            flex: 1;
+            padding-left: 0; /* Elimina cualquier relleno adicional */
+            margin: 0; /* Asegúrate de que no haya márgenes */
+        }
+
+        .header {
+            background-color: #343a40;
+            color: white;
+            padding: 10px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 0; /* Asegúrate de que no haya márgenes */
+        }
+
+            .header h1 {
+                margin: 0;
+                padding-left: 20px;
+            }
+
+            .header .user-info {
+                padding-right: 20px;
+            }
+
+        .vertical-menu {
+            width: 200px;
+            margin: 0; /* Elimina márgenes de la barra lateral */
+            padding: 0; /* Elimina rellenos de la barra lateral */
+        }
+
+            .vertical-menu a {
+                background-color: paleturquoise;
+                color: black;
+                display: flex;
+                align-items: center;
+                padding: 10px;
+                text-decoration: none;
+                font-size: 14px;
+                font-weight: bold;
+            }
+
+                .vertical-menu a i {
+                    margin-right: 10px;
+                }
+
+                .vertical-menu a:hover {
+                    background-color: #007bff;
+                    color: white;
+                }
+
+                .vertical-menu a.active {
+                    background-color: #007bff;
+                    color: white;
+                }
+
+                .vertical-menu a.modulo {
+                    background-color: indigo;
+                    color: white;
+                }
+
+        .content {
+            margin-left: 1.5rem;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1></h1>
+        <div class="user-info">
+            <span>@User.Identity.Name</span>
+            <a asp-controller="Login" asp-action="CerrarSesion" class="btn btn-link text-white">Cerrar Sesión</a>
+        </div>
+    </div>
+    <div class="table container-fluid">
+        <div class="row">
+            <!-- Añadido no-gutters para eliminar el espacio -->
+            <div class="col-md-2">
+                <div class="vertical-menu" style="width:100%">
+                    <a asp-controller="Home" asp-action="Index" class="modulo"><i class="fas fa-home"></i>Módulos</a>
+                    <a asp-controller="Tarea" asp-action="Index"><i class="fas fa-home"></i>Tareas Programadas</a>
+                </div>
+            </div>
+            <div class="col-md-9 content">
+                <div style="width:100%">
+                    @RenderBody()
+                </div>                
+            </div>
+        </div>
+    </div>
+    <footer class="text-center py-3">
+        <p>&copy; @DateTime.Now.Year - ProyectoJwt</p>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@@popperjs/core@2.9.3/dist/umd/popper.min.js" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" crossorigin="anonymous"></script>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

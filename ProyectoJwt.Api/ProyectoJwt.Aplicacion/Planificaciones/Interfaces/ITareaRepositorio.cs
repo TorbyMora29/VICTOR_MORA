@@ -11,5 +11,6 @@ namespace ProyectoJwt.Aplicacion.Planificaciones.Interfaces
         Result ActualizarTarea(Actualizar actualizacion);
         Result EliminarTarea(Eliminar eliminar);
         Result CompletarTarea(CompletarTarea completarTarea);
+        Result<TareaDto[]> ConsultarTodos(ConsultarTodos completarTarea);
     }
 }

@@ -51,9 +51,7 @@ namespace ProyectoJwt.Api.Controllers.Planificaciones
                 // Envio de la solicitud
                 var respuesta = _tarea.CrearTarea(crear);
 
-                return respuesta.IsSuccess
-                    ? Ok("Tarea creada exitosamente")
-                    : Problem(string.Join("\n", respuesta.Errors));
+                return Ok(respuesta);
             }
             catch (Exception ex)
             {
@@ -74,9 +72,7 @@ namespace ProyectoJwt.Api.Controllers.Planificaciones
                 // Envio de solicitud
                 var respuesta = _tarea.ActualizarTarea(actualizacion);
 
-                return respuesta.IsSuccess
-                    ? Ok("Tarea actualizada exitosamente")
-                    : Problem(string.Join("\n", respuesta.Errors));
+                return Ok(respuesta);
             }
             catch (Exception ex)
             {
@@ -97,9 +93,7 @@ namespace ProyectoJwt.Api.Controllers.Planificaciones
                 // Envio de solicitud
                 var respuesta = _tarea.EliminarTarea(eliminar);
 
-                return respuesta.IsSuccess
-                    ? Ok("Tarea eliminada exitosamente")
-                    : Problem(string.Join("\n", respuesta.Errors));
+                return Ok(respuesta);
             }
             catch (Exception ex)
             {
@@ -120,8 +114,30 @@ namespace ProyectoJwt.Api.Controllers.Planificaciones
                 // Envio de solicitud
                 var respuesta = _tarea.CompletarTarea(completar);
 
+                return Ok(respuesta);
+            }
+            catch (Exception ex)
+            {
+                return Problem(ex.Message);
+            }
+        }
+
+
+        [Authorize]
+        [HttpPost("/api/consultar-tarea-todos")]
+        public IActionResult ConsultarTodos([FromBody] TareaDto.ConsultarTodos consultar)
+        {
+            try
+            {
+                // Aplicar Fluent Validator
+                var validarEntrada = ValidadorTarea.ValidarEntrada(consultar);
+                if (validarEntrada.IsFailed) return BadRequest(string.Join("\n", validarEntrada.Errors));
+
+                // Envio de la solicitud
+                var respuesta = _tarea.ConsultarTodos(consultar);
+
                 return respuesta.IsSuccess
-                    ? Ok("Tarea completada exitosamente")
+                    ? Ok(respuesta.Value)
                     : Problem(string.Join("\n", respuesta.Errors));
             }
             catch (Exception ex)

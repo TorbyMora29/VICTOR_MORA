@@ -5,6 +5,7 @@ namespace ProyectoJwt.Servicios.Configuraciones.Interfaces
 {
     public interface ILoginRepositorio
     {
-        Task<LoginRespuesta> GenerarToken(LoginSolicitud loginSolicitud);
+        Task<Result<LoginRespuestaDto?>> GenerarToken(LoginSolicitudDto loginSolicitud);
+        Task<Result> CrearUsuario(CrearUsuarioSolicitudDto loginSolicitud);
     }
 }

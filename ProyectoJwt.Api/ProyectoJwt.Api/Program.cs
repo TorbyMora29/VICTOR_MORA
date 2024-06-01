@@ -36,15 +36,15 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.MapControllers();
 app.UseSession();
-app.Use(async (context, next) =>
-{
-    var token = context.Session.GetString("Token");
-    if (!string.IsNullOrEmpty(token))
-    {
-        context.Request.Headers.Append("Authorization", "Bearer " + token);
-    }
-    await next();
-});
+//app.Use(async (context, next) =>
+//{
+//    var token = context.Session.GetString("Token");
+//    if (!string.IsNullOrEmpty(token))
+//    {
+//        context.Request.Headers.Append("Authorization", "Bearer " + token);
+//    }
+//    await next();
+//});
 
 
 app.UseStaticFiles();

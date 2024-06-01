@@ -24,9 +24,7 @@ namespace ProyectoJwt.Api.Controllers.Configuraciones
 
                 var result = _usuario.CrearUsuario(creacion);
 
-                return result.IsSuccess
-                    ? Ok("Usuario Creado Exitosamente")
-                    : Problem(string.Join("\n", result.Errors));
+                return Ok(result);
             }
             catch (Exception ex)
             {
